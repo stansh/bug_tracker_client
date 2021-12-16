@@ -4,8 +4,15 @@ import Projects from './components/Projects';
 
 function App() {
   return (
-    <div className="App">
-       <Projects />
+    <div className='container'> 
+    <div className = 'row'>
+    <div className = 'col-6'>
+    <Projects />
+    </div>
+    
+
+    </div>
+      
 
 
 

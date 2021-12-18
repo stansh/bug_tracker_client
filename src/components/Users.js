@@ -1,31 +1,30 @@
 import React, { useEffect, useState } from "react";
 import { Table } from 'reactstrap';
-import { loadProjects} from "../redux/actionCreators";
+import { loadUsers} from "../redux/actionCreators";
 import { connect } from 'react-redux';
 
 
 
-
 const mapDispatchToProps =  {
-    loadProjects: (data) => loadProjects(data)
+    loadUsers: (data) => loadUsers(data)
 }
 
 
 const mapStateToProps = state => { 
     return {
-        projects: state.projectsReducer.projects
+        users: state.usersReducer.users
     };
 };
 
-function Projects (props) {
-
+function Users (props) {
+   
    
 
-   // const getProjectsData = () => dispatch => { 
-      const getProjectsData = () => { 
-            console.log("run")
+    //const getUsersData = () => dispatch => { 
+        const getUsersData = () => { 
+            
             //dispatch(productsLoading());
-            fetch( "/projects")
+            fetch( "/users")
                 .then(response => {
                 if (response.ok) { 
                     console.log(response)
@@ -42,7 +41,7 @@ function Projects (props) {
                         }
                 )
             .then(res => res.json())
-            .then(res => props.loadProjects(res))
+            .then(res => props.loadUsers(res))
             .catch(error => console.log(error)) 
             };
 
@@ -50,49 +49,38 @@ function Projects (props) {
          
   
     useEffect(() => {
-        getProjectsData()
-
+        getUsersData()
     },[]);  
 
 
 
 
-   console.log(props.projects)
+   console.log(props.users)
    return (
         <>   
-            <h5>Projects</h5>
+            <h5>Users</h5>
             <Table striped>
                 <thead>
                     <tr>
                     <th>
-                        # 
+                        Name
                     </th>
                     <th>
-                        Project
+                        Username
                     </th>
-                    <th>
-                        Description
-                    </th>
-                    <th>
-                        Date created
-                    </th>
+                   
                     </tr>
                 </thead>
                 <tbody>
-                    {props.projects.map((proj,index) => (
+                    {props.users.map((user,index) => (
                         <tr key = {index}>
-                            <th scope="row">
-                            {index + 1}
-                            </th>
                             <td>
-                            {proj.title}
+                            {user.firstname + " " + user.lastname}
                             </td>
                             <td>
-                            {proj.description}
+                            {user.username}
                             </td>
-                            <td>
-                            {proj.timestamp.substr(0,10)}
-                            </td>
+                        
                         </tr> 
                     ))}
 
@@ -103,4 +91,4 @@ function Projects (props) {
 }
 
 //export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AllProducts));
-export default connect(mapStateToProps, mapDispatchToProps)(Projects);
+export default connect(mapStateToProps, mapDispatchToProps)(Users);

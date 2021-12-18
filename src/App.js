@@ -1,21 +1,27 @@
 import React from 'react';
 import './App.css';
 import Projects from './components/Projects';
+import Users from './components/Users'
+import Tickets from './components/Tickets';
 
 function App() {
   return (
     <div className='container'> 
-    <div className = 'row'>
-    <div className = 'col-6'>
-    <Projects />
-    </div>
-    
+      <div className = 'row'>
+        <div className = 'col-4-md'>
+        <Projects />
+        </div>
+        <div className = 'col-3-md'>
+        <Users/>
+        </div>
+        <div className = 'col-3-md'>
+        <Tickets/>
+        </div>
+      </div>
 
-    </div>
       
 
-
-
+      
      {/*  <form id="signInForm">
       <h5>Sign In Form</h5>
         <label >Username:</label>

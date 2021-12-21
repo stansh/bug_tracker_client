@@ -3,10 +3,12 @@ import thunk from 'redux-thunk';
 import logger from 'redux-logger';
 import { projectsReducer } from "./projectsReducer";
 import { usersReducer } from "./usersReducer";
+import { ticketsReducer } from "./ticketsReducer";
 
 const rootReducer = combineReducers({
   projectsReducer,
-  usersReducer
+  usersReducer,
+  ticketsReducer
 
 })
 

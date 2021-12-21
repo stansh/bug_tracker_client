@@ -66,7 +66,7 @@ function Users (props) {
                         Name
                     </th>
                     <th>
-                        Username
+                        E-mail
                     </th>
                    
                     </tr>

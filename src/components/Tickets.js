@@ -1,10 +1,26 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useRef  } from "react";
 import { Table,Modal,ModalBody,ModalHeader,ModalFooter,Button } from 'reactstrap';
-import CreateTicket from './CreateTicket'
+import { loadTickets} from "../redux/actionCreators";
+import CreateTicket from './CreateTicket';
+import ModifyTicket from './ModifyTicket';
+import { connect } from 'react-redux';
 
-function Tickets () {
-    const [tickets, setTickets] = useState([])
-   
+
+const mapStateToProps = state => { 
+    return {
+        projects: state.projectsReducer.projects,
+        users: state.usersReducer.users,
+        tickets:state.ticketsReducer.tickets
+    };
+  };
+  
+
+
+const mapDispatchToProps =  {
+    loadTickets: (data) => loadTickets(data)
+}
+
+function Tickets (props) {
 
     //const getTicketsData = () => dispatch => { 
         const getTicketsData = () => { 
@@ -27,7 +43,7 @@ function Tickets () {
                         }
                 )
             .then(res => res.json())
-            .then(res => setTickets(res))
+            .then(res => props.loadTickets(res))
             .catch(error => console.log(error)) 
             };
 
@@ -41,38 +57,38 @@ function Tickets () {
 
 
 
-   console.log(tickets)
+   console.log("TICKETS: ",props.tickets)
    return (
 
         <>  
             <div>
                 <h5>Tickets</h5>
-                <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Create New Ticket</button>
+                <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newTicketModal">Create New Ticket</button>
             </div> 
-            <div className="modal fade" id="exampleModal"  aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div className="modal fade" id="newTicketModal"  aria-labelledby="newTicketModalLabel" aria-hidden="false">
                 <div className="modal-dialog">
                     <div className="modal-content">
                     <div className="modal-header">
-                        <h5 className="modal-title" id="exampleModalLabel">New Ticket Information</h5>
-                        <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+                        <button id = 'modalCloseBtn' type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div className="modal-body">
-                        <CreateTicket />
+                        <ModifyTicket />
                     </div>
-                    <div className="modal-footer">
+                    {/* <div className="modal-footer">
                         <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" className="btn btn-primary" onClick>Sunmit</button>
-                    </div>
+                        <button type="submit" className="btn btn-primary" onClick = {handleSubmit}>Submit</button>
+                    </div> */}
                     </div>
                 </div>
-</div>
+            </div>
  
 
             <Table striped>
                 <thead>
                     <tr>
                     <th>
-                        Description
+                        Issue Description
                     </th>
                     <th>
                         Project
@@ -89,22 +105,37 @@ function Tickets () {
                     </tr>
                 </thead>
                 <tbody>
-                    {tickets.map((tic,index) => (
-                        <tr>
+                    {props.tickets.map((tic,index) => (
+                        <tr key = {index}>
                             <th scope="row">
                             {tic.description}
                             </th>
                             <td>
-                            {tic.project}
+                            {tic.project.title}
                             </td>
                             <td>
-                            {tic.asssignee}
+                            {tic.assignee.firstname} {tic.assignee.lastname}
                             </td>
                             <td>
                             {tic.createdBy}
                             </td>
                             <td>
-                            <button>Modify</button>
+                                <div>
+                                    <button type="button" className="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modifyTicketModal">Modify</button>
+                                </div> 
+                                <div className="modal fade" id="modifyTicketModal"  aria-labelledby="modifyTicketModalLabel" aria-hidden="false">
+                                    <div className="modal-dialog">
+                                        <div className="modal-content">
+                                        <div className="modal-header">
+                                            <button id = 'modifyTicketCloseBtn' type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div className="modal-body">
+                                            <ModifyTicket ticket = {tic} />
+                                        </div>
+                                    
+                                        </div>
+                                    </div>
+                                </div>
                             </td>
                         </tr> 
                     ))}
@@ -116,5 +147,4 @@ function Tickets () {
    )
 }
 
-//export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AllProducts));
-export default Tickets;
+export default connect(mapStateToProps, mapDispatchToProps)(Tickets);

@@ -8,13 +8,13 @@ function App() {
   return (
     <div className='container'> 
       <div className = 'row'>
-        <div className = 'col-4-md'>
-        <Projects />
+        <div className = 'col-4-md mt-5'>
+        <Projects  />
         </div>
-        <div className = 'col-3-md'>
+        <div className = 'col-3-md mt-5'>
         <Users/>
         </div>
-        <div className = 'col-3-md'>
+        <div className = 'col-3-md mt-5'>
         <Tickets/>
         </div>
       </div>

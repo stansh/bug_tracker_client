@@ -13,7 +13,8 @@ const mapStateToProps = state => {
         tickets:state.ticketsReducer.tickets
     };
   };
-  
+
+ 
 
 
 const mapDispatchToProps =  {
@@ -73,7 +74,7 @@ function Tickets (props) {
                         <button id = 'modalCloseBtn' type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div className="modal-body">
-                        <ModifyTicket />
+                        <CreateTicket />
                     </div>
                     {/* <div className="modal-footer">
                         <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -107,8 +108,15 @@ function Tickets (props) {
                 <tbody>
                     {props.tickets.map((tic,index) => (
                         <tr key = {index}>
-                            <th scope="row">
+                            <th >
                             {tic.description}
+
+                            
+                            {tic.comments.map(com => (
+                            <h6 className = 'small '>{com.text}</h6>
+                          
+                            ))}
+                            
                             </th>
                             <td>
                             {tic.project.title}
@@ -121,7 +129,25 @@ function Tickets (props) {
                             </td>
                             <td>
                                 <div>
-                                    <button type="button" className="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modifyTicketModal">Modify</button>
+                                    <button type="button" className="btn btn-secondary" data-bs-toggle="modal" data-bs-target={`#modifyTicketModal${index}`} >Modify</button>
+                                </div> 
+                                <div className="modal fade" id={`modifyTicketModal${index}`}  aria-labelledby={`modifyTicketModalLabel${index}`} aria-hidden="false">
+                                    <div className="modal-dialog">
+                                        <div className="modal-content">
+                                        <div className="modal-header">
+                                            <button id = {`modifyTicketCloseBtn${index}`} type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div className="modal-body" >
+                                          <ModifyTicket ticket = {tic} />    
+                                        </div>
+                                    
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                           {/*  <td>
+                                <div>
+                                    <button type="button" className="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modifyTicketModal" >Modify</button>
                                 </div> 
                                 <div className="modal fade" id="modifyTicketModal"  aria-labelledby="modifyTicketModalLabel" aria-hidden="false">
                                     <div className="modal-dialog">
@@ -129,14 +155,14 @@ function Tickets (props) {
                                         <div className="modal-header">
                                             <button id = 'modifyTicketCloseBtn' type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
-                                        <div className="modal-body">
-                                            <ModifyTicket ticket = {tic} />
+                                        <div className="modal-body" >
+                                          <ModifyTicket ticket = {tic} />    
                                         </div>
                                     
                                         </div>
                                     </div>
                                 </div>
-                            </td>
+                            </td> */}
                         </tr> 
                     ))}
 

@@ -23,12 +23,12 @@ function Projects (props) {
 
    // const getProjectsData = () => dispatch => { 
       const getProjectsData = () => { 
-            console.log("run")
+            
             //dispatch(productsLoading());
             fetch( "/projects")
                 .then(response => {
                 if (response.ok) { 
-                    console.log(response)
+                    
                     return response
                 } else {
                     const error = new Error(`Error ${response.status}: ${response.statusText}`);  
@@ -57,7 +57,7 @@ function Projects (props) {
 
 
 
-   console.log(props.projects)
+  
    return (
         <>   
             <h5>Projects</h5>

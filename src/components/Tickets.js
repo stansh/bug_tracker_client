@@ -22,6 +22,21 @@ const mapDispatchToProps =  {
 }
 
 function Tickets (props) {
+    
+
+    const commentsDisplay = e => {
+        const index = e.target.value.toString()
+        let dispValue = document.getElementById(`comments${index}`).style.display
+        if (dispValue === 'none') {
+            document.getElementById(`comments${index}`).style.display = 'block'
+            e.target.innerHTML= 'Hide Comments'
+        } else {
+            document.getElementById(`comments${index}`).style.display = 'none'
+            e.target.innerHTML= 'Show Comments'
+
+        }
+    }
+   
 
     //const getTicketsData = () => dispatch => { 
         const getTicketsData = () => { 
@@ -30,7 +45,7 @@ function Tickets (props) {
             fetch( "/tickets")
                 .then(response => {
                 if (response.ok) { 
-                    console.log(response)
+                    
                     return response
                 } else {
                     const error = new Error(`Error ${response.status}: ${response.statusText}`);  
@@ -76,10 +91,6 @@ function Tickets (props) {
                     <div className="modal-body">
                         <CreateTicket />
                     </div>
-                    {/* <div className="modal-footer">
-                        <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" className="btn btn-primary" onClick = {handleSubmit}>Submit</button>
-                    </div> */}
                     </div>
                 </div>
             </div>
@@ -109,13 +120,18 @@ function Tickets (props) {
                     {props.tickets.map((tic,index) => (
                         <tr key = {index}>
                             <th >
-                            {tic.description}
-
+                                <h4>{tic.description}</h4>
+                                <Button outline size ='sm' color ='secondary' value = {index} onClick = {commentsDisplay}>Show Commnets</Button>
                             
+
+
+                            <div className = 'list-unstyled small comments' id = {`comments${index}`} style = {{display: "none"}}>
+                                <p>Comments: </p>
+                                
                             {tic.comments.map(com => (
-                            <h6 className = 'small '>{com.text}</h6>
-                          
+                            <li>{com.commentText} </li>
                             ))}
+                            </div>
                             
                             </th>
                             <td>
@@ -145,25 +161,9 @@ function Tickets (props) {
                                     </div>
                                 </div>
                             </td>
-                           {/*  <td>
-                                <div>
-                                    <button type="button" className="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modifyTicketModal" >Modify</button>
-                                </div> 
-                                <div className="modal fade" id="modifyTicketModal"  aria-labelledby="modifyTicketModalLabel" aria-hidden="false">
-                                    <div className="modal-dialog">
-                                        <div className="modal-content">
-                                        <div className="modal-header">
-                                            <button id = 'modifyTicketCloseBtn' type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div className="modal-body" >
-                                          <ModifyTicket ticket = {tic} />    
-                                        </div>
-                                    
-                                        </div>
-                                    </div>
-                                </div>
-                            </td> */}
-                        </tr> 
+                        </tr>
+                        
+                        
                     ))}
 
                 </tbody>

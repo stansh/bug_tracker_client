@@ -16,7 +16,7 @@ function CreateTicket (props) {
 
   const onSubmit = (event)=> {
    
-    event.preventDefault()
+    //event.preventDefault()
     document.querySelector("#modalCloseBtn").click()
   
     const formData = {
@@ -24,6 +24,7 @@ function CreateTicket (props) {
       assignee:event.target.selectAssignee.options[event.target.selectAssignee.selectedIndex].value,
       project:event.target.selectProject.options[event.target.selectProject.selectedIndex].value
     }
+   
 
     return fetch('/tickets', {
       method: "POST",

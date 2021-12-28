@@ -17,3 +17,20 @@ h5 {
    background-color: rgb(192, 219, 250);
    padding: 1rem;
 }
+
+.comments {
+  
+  
+
+}
+
+.comments li {
+  background-color: rgb(250, 253, 207);
+  border: 1px solid rgb(139, 139, 139);
+  border-radius: 5px;
+  width: 100%;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  padding: 5px;
+ 
+}

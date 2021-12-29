@@ -15,3 +15,18 @@ export const loadTickets = data => ({
     type: actions.LOAD_TICKETS,
     payload: data
 });
+
+export const removeTicketRedux = ticket =>({
+    type: actions.REMOVE_TICKET,
+    payload: ticket
+})
+
+export const addTicketRedux = ticket =>({
+    type: actions.ADD_TICKET,
+    payload: ticket
+})
+
+export const updateTicketRedux = ticket =>({
+    type: actions.UPDATE_TICKET,
+    payload: ticket
+})

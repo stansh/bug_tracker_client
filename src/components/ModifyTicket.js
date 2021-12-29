@@ -1,7 +1,8 @@
 
-import React, { useEffect, useState,forwardRef } from "react";
+import React, { useEffect, useState,forwardRef, createElement } from "react";
 import { Form,FormGroup,Input,Label,Col,Button, Badge } from 'reactstrap';
 import { connect } from 'react-redux';
+import { removeTicketRedux,updateTicketRedux} from "../redux/actionCreators";
 
 const mapStateToProps = state => { 
   return {
@@ -11,27 +12,40 @@ const mapStateToProps = state => {
   };
 };
 
+const mapDispatchToProps =  {
+  removeTicketRedux: (data) => removeTicketRedux(data),
+  updateTicketRedux : (data) => updateTicketRedux(data) 
+}
 
-function ModifyTicket ({ticket,users,tickets}) { 
-  const index = tickets.indexOf(ticket).toString()
+
+
+
+function ModifyTicket (props) { 
+
+  const index = props.tickets.indexOf(props.ticket).toString()
+  let currentAssignee = props.tickets[index].assignee
+  const otherUsers = props.users.filter(user=> user._id !== currentAssignee._id)
+  const changeAssignee = (e) => {
+    const selectedAssigneeId = e.target.options[e.target.selectedIndex].value
+    currentAssignee = props.users.find(user=> user._id === selectedAssigneeId )
+    document.getElementById('currentAssignee').innerHTML = currentAssignee.firstname + ' '+  currentAssignee.lastname
+  }
 
 
 
 const updateTicket = (e) => {
   
-  //e.preventDefault()
+  e.preventDefault()
   document.getElementById('modifyTicketCloseBtn' + index).click()
   const commentText = document.getElementById(`ticketComment${index}`).value
-  const assignee= document.getElementById(`selectAssignee${index}`).value
- 
   const updateData = {
     commentText: commentText,
-    assignee: assignee
+    assignee: currentAssignee
    
   }
 
-  console.log(updateData)
-  return fetch(`/tickets/${ticket._id}`, {
+
+  return fetch(`/tickets/${props.ticket._id}`, {
     method: "POST",
     body: JSON.stringify(updateData),
     headers: {
@@ -40,9 +54,7 @@ const updateTicket = (e) => {
   })
   .then(response => {
           if (response.ok) {
-            document.getElementById(`ticketComment${index}`).value = ""
-           
-
+            //document.getElementById(`ticketComment${index}`).value = ""
               return response;
           } else {
               const error = new Error(`Error ${response.status}: ${response.statusText}`);
@@ -53,6 +65,8 @@ const updateTicket = (e) => {
       error => { throw error; }
   )
   .then(res => res.json())
+  .then(res => props.updateTicketRedux(res))
+ //.then(res => console.log("respone:", res))
   .catch(error => {console.log('Error: ', error.message)})
     
     
@@ -61,7 +75,7 @@ const updateTicket = (e) => {
 
 const removeTicket = () => {
   document.getElementById('modifyTicketCloseBtn' + index).click()
-  return fetch(`/tickets/${ticket._id}`, {
+  return fetch(`/tickets/${props.ticket._id}`, {
     method: "DELETE",
     body: JSON.stringify(),
     headers: {
@@ -80,6 +94,8 @@ const removeTicket = () => {
       error => { throw error; }
   )
   .then(res => res.json())
+  .then(res => props.removeTicketRedux(res))
+  //.then(res => console.log(res))
   .catch(error => {console.log('Error: ', error.message)})
 }
 
@@ -92,7 +108,7 @@ return (
     <Form  onSubmit = {updateTicket}>
       <FormGroup>""
         <Label for="ticketDescription">
-          Issue Description: <br /> <strong>{ticket.description}</strong>
+          Issue Description: <br /> <strong>{props.ticket.description}</strong>
         </Label>
       </FormGroup>
       <FormGroup>
@@ -114,16 +130,19 @@ return (
             for={`selectAssignee${index}`}
             sm={6}
           >
-            Assignee:  {tickets[index].assignee.firstname} {tickets[index].assignee.lastname}
+            Assignee:  <strong id="currentAssignee">{currentAssignee.firstname} {currentAssignee.lastname}</strong>
           </Label>
           <Col sm={10}>
           <Input
               id={`selectAssignee${index}`}
               name="selectAssignee"
               type="select"
+              onClick= {changeAssignee}
+              
             >
-              <br /> 
-              {users.map(user =>(<option value = {user._id}>{user.firstname} {user.lastname}</option>))}
+              
+              {otherUsers.map((user,index) =>(<option key = {index} value = {user._id} >{user.firstname} {user.lastname}</option>))}
+              
             </Input>
           
           </Col>
@@ -138,4 +157,4 @@ return (
 }
 
 
-export default connect(mapStateToProps,null)(ModifyTicket);
+export default connect(mapStateToProps,mapDispatchToProps)(ModifyTicket);

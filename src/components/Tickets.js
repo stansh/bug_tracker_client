@@ -60,6 +60,7 @@ function Tickets (props) {
                 )
             .then(res => res.json())
             .then(res => props.loadTickets(res))
+            //.then(res => console.log("respone:", res))
             .catch(error => console.log(error)) 
             };
 
@@ -73,7 +74,7 @@ function Tickets (props) {
 
 
 
-   console.log("TICKETS: ",props.tickets)
+ 
    return (
 
         <>  
@@ -85,7 +86,7 @@ function Tickets (props) {
                 <div className="modal-dialog">
                     <div className="modal-content">
                     <div className="modal-header">
-
+                        <h4>New Ticket</h4>
                         <button id = 'modalCloseBtn' type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div className="modal-body">
@@ -112,6 +113,9 @@ function Tickets (props) {
                         Created by
                     </th>
                     <th>
+                        Date created
+                    </th>
+                    <th>
                         
                     </th>
                     </tr>
@@ -128,8 +132,8 @@ function Tickets (props) {
                             <div className = 'list-unstyled small comments' id = {`comments${index}`} style = {{display: "none"}}>
                                 <p>Comments: </p>
                                 
-                            {tic.comments.map(com => (
-                            <li>{com.commentText} </li>
+                            {tic.comments.map((com, index )=> (
+                            <li key = {index}>{com.commentText} </li>
                             ))}
                             </div>
                             
@@ -139,9 +143,13 @@ function Tickets (props) {
                             </td>
                             <td>
                             {tic.assignee.firstname} {tic.assignee.lastname}
+                            
                             </td>
                             <td>
                             {tic.createdBy}
+                            </td>
+                            <td>
+                            {tic.createdAt.substr(0,10)}
                             </td>
                             <td>
                                 <div>

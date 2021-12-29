@@ -55,7 +55,7 @@ function Users (props) {
 
 
 
-   console.log(props.users)
+  
    return (
         <>   
             <h5>Users</h5>

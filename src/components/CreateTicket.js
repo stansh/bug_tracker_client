@@ -2,6 +2,7 @@
 import React, { useEffect, useState,forwardRef } from "react";
 import { Form,FormGroup,Input,Label,Col,Button } from 'reactstrap';
 import { connect } from 'react-redux';
+import { addTicketRedux} from "../redux/actionCreators";
 
 const mapStateToProps = state => { 
   return {
@@ -10,13 +11,18 @@ const mapStateToProps = state => {
   };
 };
 
+const mapDispatchToProps =  {
+  addTicketRedux: (data) => addTicketRedux(data)
+ 
+}
+
 
 
 function CreateTicket (props) {
 
   const onSubmit = (event)=> {
    
-    //event.preventDefault()
+    event.preventDefault()
     document.querySelector("#modalCloseBtn").click()
   
     const formData = {
@@ -45,6 +51,7 @@ function CreateTicket (props) {
         error => { throw error; }
     )
     .then(res => res.json())
+    .then(res => props.addTicketRedux(res))
     .catch(error => {console.log('Error: ', error.message)})
 
   } 
@@ -79,7 +86,7 @@ function CreateTicket (props) {
               name="selectProject"
               type="select"
             >
-              {props.projects.map(proj =>(<option value = {proj._id}>{proj.title}</option>))}
+              {props.projects.map((proj,index) =>(<option key = {index} value = {proj._id}>{proj.title}</option>))}
             </Input>
           
           </Col>
@@ -97,7 +104,7 @@ function CreateTicket (props) {
               name="selectAssignee"
               type="select"
             >
-              {props.users.map(user =>(<option value = {user._id}>{user.firstname} {user.lastname}</option>))}
+              {props.users.map((user,index) =>(<option key = {index} value = {user._id}>{user.firstname} {user.lastname}</option>))}
             </Input>
           
           </Col>
@@ -109,4 +116,4 @@ function CreateTicket (props) {
   )
 }
 
-export default connect(mapStateToProps,null)(CreateTicket);
+export default connect(mapStateToProps,mapDispatchToProps)(CreateTicket);

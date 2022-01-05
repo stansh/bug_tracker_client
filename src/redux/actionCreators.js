@@ -30,3 +30,8 @@ export const updateTicketRedux = ticket =>({
     type: actions.UPDATE_TICKET,
     payload: ticket
 })
+
+export const saveSearchResults = data => ({
+    type:actions.SAVE_SEARCH_RESULTS,
+    payload: data
+})

@@ -27,7 +27,7 @@ function Users (props) {
             fetch( "/users")
                 .then(response => {
                 if (response.ok) { 
-                    console.log(response)
+                   // console.log(response)
                     return response
                 } else {
                     const error = new Error(`Error ${response.status}: ${response.statusText}`);  

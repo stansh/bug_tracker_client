@@ -21,22 +21,28 @@ const mapDispatchToProps =  {
 function CreateTicket (props) {
 
   const onSubmit = (event)=> {
-   
     event.preventDefault()
     document.querySelector("#modalCloseBtn").click()
-  
+    const assigneeId = event.target.selectAssignee.options[event.target.selectAssignee.selectedIndex].value
+    const projectId  = event.target.selectProject.options[event.target.selectProject.selectedIndex].value
+    const assignee = props.users.find(user => user._id === assigneeId)
+    const project = props.projects.find(proj => proj._id === projectId)
+ 
     const formData = {
       description: event.target.description.value,
-      assignee:event.target.selectAssignee.options[event.target.selectAssignee.selectedIndex].value,
-      project:event.target.selectProject.options[event.target.selectProject.selectedIndex].value
+      assignee: assigneeId,
+      project: projectId,
+      priority: event.target.selectPriority.options[event.target.selectPriority.selectedIndex].value
     }
+
+    event.target.description.value = ''
    
 
     return fetch('/tickets', {
       method: "POST",
       body: JSON.stringify(formData),
       headers: {
-          "Content-Type": "application/json" // so the server knows that the body will be formated as JSON
+          "Content-Type": "application/json" 
       }
     })
     .then(response => {
@@ -51,7 +57,7 @@ function CreateTicket (props) {
         error => { throw error; }
     )
     .then(res => res.json())
-    .then(res => props.addTicketRedux(res))
+    .then(res => props.addTicketRedux({res,assignee,project}))
     .catch(error => {console.log('Error: ', error.message)})
 
   } 
@@ -72,6 +78,30 @@ function CreateTicket (props) {
             type = "textarea"
 
           />
+        </FormGroup>
+        <FormGroup row>
+          <Label
+            for="selectPriority"
+            sm={2}
+          >
+            Priority:
+          </Label>
+          <Col sm={10}>
+            <Input
+              id="selectPriority"
+              name="sselectPriority"
+              type="select"
+            >  
+              
+              <option value = 'low'>Low</option>
+              <option value = 'medium'>Medium</option>
+              <option value = 'high'>Hight</option>
+
+              
+              
+            </Input>
+          
+          </Col>
         </FormGroup>
         <FormGroup row>
           <Label

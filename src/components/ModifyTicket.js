@@ -22,14 +22,24 @@ const mapDispatchToProps =  {
 
 function ModifyTicket (props) { 
 
-  const index = props.tickets.indexOf(props.ticket).toString()
+  const index = props.tickets.indexOf(props.ticket)
   let currentAssignee = props.tickets[index].assignee
   const otherUsers = props.users.filter(user=> user._id !== currentAssignee._id)
+  let currentPriority = props.tickets[index].priority
+
+
+  const changePriority = (e) => {
+    
+    currentPriority = e.target.options[e.target.selectedIndex].value
+    document.getElementById(`currentPriority${index}`).innerHTML = currentPriority
+  }
+
   const changeAssignee = (e) => {
     const selectedAssigneeId = e.target.options[e.target.selectedIndex].value
     currentAssignee = props.users.find(user=> user._id === selectedAssigneeId )
-    document.getElementById('currentAssignee').innerHTML = currentAssignee.firstname + ' '+  currentAssignee.lastname
+    document.getElementById(`currentAssignee${index}`).innerHTML = currentAssignee.firstname + ' '+  currentAssignee.lastname
   }
+
 
 
 
@@ -40,10 +50,11 @@ const updateTicket = (e) => {
   const commentText = document.getElementById(`ticketComment${index}`).value
   const updateData = {
     commentText: commentText,
-    assignee: currentAssignee
+    assignee: currentAssignee,
+    priority: currentPriority
    
   }
-
+  document.getElementById(`ticketComment${index}`).value = ''
 
   return fetch(`/tickets/${props.ticket._id}`, {
     method: "POST",
@@ -114,8 +125,6 @@ return (
       <FormGroup>
         <Label for={`ticketComment${index}`}>
           Commnets:
-         
-    
         </Label>
         <Input
           id={`ticketComment${index}`}
@@ -123,14 +132,35 @@ return (
           type = "textarea"
           
         />
-        {/* <Button onClick ={handleComment}>Add Commnet</Button> */}
       </FormGroup>
       <FormGroup row>
           <Label
-            for={`selectAssignee${index}`}
-            sm={6}
+            for="selectPriority"
+            sm={4}
           >
-            Assignee:  <strong id="currentAssignee">{currentAssignee.firstname} {currentAssignee.lastname}</strong>
+            Priority: <strong id={`currentPriority${index}`}>{currentPriority}</strong>
+          </Label>
+          <Col sm={10}>
+            <Input
+              id="selectPriority"
+              name="sselectPriority"
+              type="select"
+              onClick= {changePriority}
+            >  
+              <option value = 'low'>Low</option>
+              <option value = 'medium'>Medium</option>
+              <option value = 'high'>Hight</option>
+
+            </Input>
+          
+          </Col>
+        </FormGroup>
+      <FormGroup row>
+          <Label
+            for={`selectAssignee${index}`}
+            sm={8}
+          >
+            Current Assignee:  <strong id={`currentAssignee${index}`}>{currentAssignee.firstname} {currentAssignee.lastname}</strong>
           </Label>
           <Col sm={10}>
           <Input

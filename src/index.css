@@ -18,11 +18,28 @@ h5 {
    padding: 1rem;
 }
 
-.comments {
-  
-  
+#nav,#nav > a  {
+ background-color: rgb(35, 133, 190);
+ color: rgb(255, 255, 255);
 
+ 
 }
+
+.nav-link > a  {
+   color: rgb(255, 255, 255);
+   text-decoration: none;
+   font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+   font-size: 1.5em;
+   vertical-align: baseline;
+}
+
+
+
+
+.navbar-brand   {
+  padding-left: 1rem;
+
+ }
 
 .comments li {
   background-color: rgb(250, 253, 207);

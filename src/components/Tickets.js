@@ -1,6 +1,7 @@
 import React, { useEffect, useState,useRef  } from "react";
 import { Table,Badge,ModalBody,ModalHeader,ModalFooter,Button } from 'reactstrap';
-import { loadTickets, saveSearchResults} from "../redux/actionCreators";
+import { getTicketsData, saveSearchResults} from "../redux/actionCreators";
+import  {  Link} from 'react-router-dom';
 import CreateTicket from './CreateTicket';
 import ModifyTicket from './ModifyTicket';
 //import SearchTickets from './SearchTickets'
@@ -20,7 +21,7 @@ const mapStateToProps = state => {
 
 
 const mapDispatchToProps =  {
-    loadTickets: (data) => loadTickets(data),
+    getTicketsData: () => getTicketsData(),
     saveSearchResults: (data) => saveSearchResults(data)
 }
 
@@ -82,7 +83,7 @@ function Tickets (props) {
  
 
    
-    const getTicketsData = () => { 
+    /* const getTicketsData = () => { 
         //dispatch(productsLoading());
         fetch( "/tickets")
             .then(response => {
@@ -103,25 +104,26 @@ function Tickets (props) {
         .then(res => props.loadTickets(res) )
         .catch(error => console.log(error)) 
         };
-
-    useEffect(() => {
-        getTicketsData();
+ */
+   /*  useEffect(() => {
+        props.getTicketsData();
         
        
-    },[]);  
+    },[]);   */
 
   
    if (props.searchResults === null) {
     return (
 
         <>  
-            <div>
+            <div className="mt-3">
                 <h5>Tickets</h5>
                 <span> 
                     <input ref = {inputText} type='search' />
-                    <Button  className =' col' onClick ={() => searchTickets(inputText.current.value)}>Seacrh Tickets</Button>
+                    <Button className="mx-1" onClick ={() => searchTickets(inputText.current.value)}>Seacrh Tickets</Button>
+                    <Button type="button" color="primary" data-bs-toggle="modal" data-bs-target="#newTicketModal">Create New Ticket</Button>
                 </span>
-                <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newTicketModal">Create New Ticket</button>
+                
             </div> 
             <div className="modal fade" id="newTicketModal"  aria-labelledby="newTicketModalLabel" aria-hidden="false">
                 <div className="modal-dialog">
@@ -136,7 +138,7 @@ function Tickets (props) {
                     </div>
                 </div>
             </div>
-            <Table striped>
+            <Table striped >
                 <thead>
                     <tr>
                     <th>
@@ -164,51 +166,55 @@ function Tickets (props) {
                 </thead>
                 <tbody>
                     {props.tickets.map((tic,index) => (
-                        <tr key = {index}>
-                            <th >
-                                <h4>{tic.description}</h4>
-                                <Button outline size ='sm' color ='secondary' value = {index} onClick = {commentsDisplay}>Show Commnets</Button>
-                                <div className = 'list-unstyled small comments' id = {`comments${index}`} style = {{display: "none"}}>
-                                    <p>Comments: </p>  
-                                    {tic.comments.map((com, index )=> (
-                                        <li key = {index}>{com.commentText} </li>
-                                    ))}
-                                </div>
-                            </th>
-                            <td>
-                                <Badge className='priorityBadge' >{tic.priority}</Badge>
-                            </td>
-                            <td>
-                                {tic.project.title}
-                            </td>
-                            <td>
-                                {tic.assignee.firstname} {tic.assignee.lastname}
-                            </td>
-                            <td>
-                                {tic.createdBy}
-                            </td>
-                            <td>
-                                {tic.createdAt.substr(0,10)}
-                            </td>
-                            <td>
-                                <div>
-                                    <button type="button" className="btn btn-secondary" data-bs-toggle="modal" data-bs-target={`#modifyTicketModal${index}`} >Modify</button>
-                                </div> 
-                                <div className="modal fade" id={`modifyTicketModal${index}`}  aria-labelledby={`modifyTicketModalLabel${index}`} aria-hidden="false">
-                                    <div className="modal-dialog">
-                                        <div className="modal-content">
-                                        <div className="modal-header">
-                                            <button id = {`modifyTicketCloseBtn${index}`} type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div className="modal-body" >
-                                          <ModifyTicket ticket = {tic} />    
-                                        </div>
-                                    
+                      
+                            <tr key = {index} >  
+                                <th >
+                                    <Link to = {`/tickets/${tic._id}`}>  
+                                        <h4>{tic.description}</h4>
+                                    </Link>
+                                    <Button outline size ='sm' color ='secondary' value = {index} onClick = {commentsDisplay}>Show Commnets</Button>
+                                    <div className = 'list-unstyled small comments' id = {`comments${index}`} style = {{display: "none"}}>
+                                        <p>Comments: </p>  
+                                        {tic.comments.map((com, index )=> (
+                                            <li key = {index}>{com.commentText} </li>
+                                        ))}
+                                    </div>
+                                </th>
+                                <td>
+                                    <Badge className='priorityBadge' >{tic.priority}</Badge>
+                                </td>
+                                <td>
+                                    {tic.project.title}
+                                </td>
+                                <td>
+                                    {tic.assignee.firstname} {tic.assignee.lastname}
+                                </td>
+                                <td>
+                                    {tic.createdBy}
+                                </td>
+                                <td>
+                                    {tic.createdAt.substr(0,10)}
+                                </td>
+                                <td>
+                                    <div>
+                                        <button type="button" className="btn btn-secondary" data-bs-toggle="modal" data-bs-target={`#modifyTicketModal${index}`} >Modify</button>
+                                    </div> 
+                                    <div className="modal fade" id={`modifyTicketModal${index}`}  aria-labelledby={`modifyTicketModalLabel${index}`} aria-hidden="false">
+                                        <div className="modal-dialog">
+                                            <div className="modal-content">
+                                            <div className="modal-header">
+                                                <button id = {`modifyTicketCloseBtn${index}`} type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div className="modal-body" >
+                                            <ModifyTicket ticket = {tic} />    
+                                            </div>
+                                        
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </td>
-                        </tr>
+                                </td>
+                            </tr>
+                      
                         
                         
                     ))}

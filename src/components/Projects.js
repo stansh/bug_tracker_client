@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Table } from 'reactstrap';
-import { loadProjects} from "../redux/actionCreators";
+import { getProjectsData} from "../redux/actionCreators";
 import { connect } from 'react-redux';
 
 
 
 
 const mapDispatchToProps =  {
-    loadProjects: (data) => loadProjects(data)
+    getProjectsData: () => getProjectsData()
 }
 
 
@@ -21,7 +21,7 @@ function Projects (props) {
 
    
 
-   // const getProjectsData = () => dispatch => { 
+  /*  // const getProjectsData = () => dispatch => { 
       const getProjectsData = () => { 
             
             //dispatch(productsLoading());
@@ -45,14 +45,14 @@ function Projects (props) {
             .then(res => props.loadProjects(res))
             .catch(error => console.log(error)) 
             };
-
+ */
  
          
   
-    useEffect(() => {
-        getProjectsData()
+   /*  useEffect(() => {
+        props.getProjectsData()
 
-    },[]);  
+    },[]);   */
 
 
 
@@ -61,7 +61,7 @@ function Projects (props) {
    return (
         <>   
             <h5>Projects</h5>
-            <Table striped>
+            <Table striped responsive>
                 <thead>
                     <tr>
                     <th>

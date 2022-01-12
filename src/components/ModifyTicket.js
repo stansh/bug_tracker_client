@@ -130,7 +130,6 @@ return (
           id={`ticketComment${index}`}
           name="ticketComment"
           type = "textarea"
-          
         />
       </FormGroup>
       <FormGroup row>
@@ -168,9 +167,7 @@ return (
               name="selectAssignee"
               type="select"
               onClick= {changeAssignee}
-              
             >
-              
               {otherUsers.map((user,index) =>(<option key = {index} value = {user._id} >{user.firstname} {user.lastname}</option>))}
               
             </Input>

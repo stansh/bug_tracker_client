@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Table } from 'reactstrap';
-import { loadUsers} from "../redux/actionCreators";
+import { getUsersData} from "../redux/actionCreators";
 import { connect } from 'react-redux';
 
 
 
 const mapDispatchToProps =  {
-    loadUsers: (data) => loadUsers(data)
+    getUsersData: () => getUsersData()
 }
 
 
@@ -20,7 +20,7 @@ function Users (props) {
    
    
 
-    //const getUsersData = () => dispatch => { 
+   /*  //const getUsersData = () => dispatch => { 
         const getUsersData = () => { 
             
             //dispatch(productsLoading());
@@ -44,14 +44,14 @@ function Users (props) {
             .then(res => props.loadUsers(res))
             .catch(error => console.log(error)) 
             };
-
+ */
  
          
   
-    useEffect(() => {
-        getUsersData()
+/*     useEffect(() => {
+        props.getUsersData()
     },[]);  
-
+ */
 
 
 

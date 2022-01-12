@@ -3,12 +3,18 @@
 import * as actions from "./actions"
 
 export const ticketsReducer = (state = {
+    isLoading:true,
+    errMess:null,
     tickets: [],
     searchResults:null
 }, action) => {
     switch (action.type) {
         case actions.LOAD_TICKETS:
+            return {...state, isLoading: false, errMess: null, tickets: action.payload};
+        case actions.LOADING_TICKETS:
             return {...state, isLoading: true, errMess: null, tickets: action.payload};
+        case actions.LOAD_TICKETS_FAILED:
+            return {...state, isLoading: false, errMess: action.payload, tickets: []};
         case actions.ADD_TICKET:
             let newTicket = action.payload.res;
             newTicket.assignee = action.payload.assignee;

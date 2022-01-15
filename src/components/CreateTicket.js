@@ -3,6 +3,7 @@ import React, { useEffect, useState,forwardRef } from "react";
 import { Form,FormGroup,Input,Label,Col,Button } from 'reactstrap';
 import { connect } from 'react-redux';
 import { addTicketRedux} from "../redux/actionCreators";
+import { useUser } from "../auth/useUser";
 
 const mapStateToProps = state => { 
   return {
@@ -19,6 +20,8 @@ const mapDispatchToProps =  {
 
 
 function CreateTicket (props) {
+   const user = useUser();
+
 
   const onSubmit = (event)=> {
     event.preventDefault()
@@ -27,12 +30,14 @@ function CreateTicket (props) {
     const projectId  = event.target.selectProject.options[event.target.selectProject.selectedIndex].value
     const assignee = props.users.find(user => user._id === assigneeId)
     const project = props.projects.find(proj => proj._id === projectId)
+    
  
     const formData = {
       description: event.target.description.value,
       assignee: assigneeId,
       project: projectId,
-      priority: event.target.selectPriority.options[event.target.selectPriority.selectedIndex].value
+      priority: event.target.selectPriority.options[event.target.selectPriority.selectedIndex].value,
+      createdBy: user._id
     }
 
     event.target.description.value = ''

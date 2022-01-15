@@ -7,12 +7,12 @@ import { useUser } from './useUser';
     if (!user) return <Navigate to="/login" />
 
     return <Route {...props} />
-} */
-
+}
+ */
 
 export const PrivateRoute = ({children})=> {
     const user = useUser();
-    console.log(user)
+   
 
     return user ? children : <Navigate to="/login" />;
 }

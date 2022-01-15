@@ -3,6 +3,7 @@ import React, { useEffect, useState,forwardRef, createElement } from "react";
 import { Form,FormGroup,Input,Label,Col,Button, Badge } from 'reactstrap';
 import { connect } from 'react-redux';
 import { removeTicketRedux,updateTicketRedux} from "../redux/actionCreators";
+import { useUser } from "../auth/useUser";
 
 const mapStateToProps = state => { 
   return {
@@ -26,10 +27,10 @@ function ModifyTicket (props) {
   let currentAssignee = props.tickets[index].assignee
   const otherUsers = props.users.filter(user=> user._id !== currentAssignee._id)
   let currentPriority = props.tickets[index].priority
+  const user = useUser()
 
 
   const changePriority = (e) => {
-    
     currentPriority = e.target.options[e.target.selectedIndex].value
     document.getElementById(`currentPriority${index}`).innerHTML = currentPriority
   }
@@ -51,9 +52,11 @@ const updateTicket = (e) => {
   const updateData = {
     commentText: commentText,
     assignee: currentAssignee,
-    priority: currentPriority
+    priority: currentPriority,
+    commentator: user._id
    
   }
+  console.log(updateData )
   document.getElementById(`ticketComment${index}`).value = ''
 
   return fetch(`/tickets/${props.ticket._id}`, {

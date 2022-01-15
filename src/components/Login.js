@@ -1,4 +1,4 @@
-import React, { useEffect, useState,forwardRef } from "react";
+import React, { useEffect, useState,setState } from "react";
 import { Form,FormGroup,Input,Label,Col,Button } from 'reactstrap';
 import {useNavigate} from 'react-router-dom';
 import { useToken } from '../auth/useToken';
@@ -6,53 +6,68 @@ import { useToken } from '../auth/useToken';
 
 
 function Login () {
-    const [token, setToken] = useToken();
-    const [errorMessage, setErrorMessage] = useState('');
+   // const [token, setToken] = useToken();
+  
+  
+    
+    const [error, setError] = useState(null);
 
+    //console.log("login token", token)
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const navigate = useNavigate();
 
+    
+
     const handleLogin = (e) => {
+       
 
         e.preventDefault()
         console.log('login ');
         const credentials = {
             username: email,
             password,
-       
-
         }
-        return fetch("/users/login", {
+        return fetch("/users/login" ,{
             method: "POST",
             body: JSON.stringify(credentials),
             headers: {
                 "Content-Type": "application/json" 
             }
-          })
+          },)
           .then(response => {
                   if (response.ok) {
-                     //setToken(response.token);
+                   //  setToken(response.token);
 
-                      navigate('/')
+                  /*     navigate('/')  */
+                     
                       
                       return response;
                   } else {
                       const error = new Error(`Error ${response.status}: ${response.statusText}`);
                       error.response = response;
+                      alert(response.statusText)
                       throw error;
                   }
               },
               error => { throw error; }
           )
-          .then(res => res.json())
-        .then(res => setToken(res.token))
-       // .then(res => console.log(res.status))
-         .catch(error => {console.log('Error: ', error.message)})
+         .then(res => res.json())
 
+       .then(res => {
+        localStorage.setItem("token", res.token);
+       navigate('/')
+    })
+   
+
+         .catch(error => {
+             console.log('Error: ', error.message)
+             setError(error.message)
+            })
 
     }
+
 
 
     return (

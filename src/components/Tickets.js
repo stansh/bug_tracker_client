@@ -30,7 +30,7 @@ const mapDispatchToProps =  {
 function Tickets (props) {
  
     const inputText = useRef();
-  
+    
    /*  const badges = document.querySelectorAll('.priorityBadge')
         console.log(badges)
         badges.forEach(b =>{
@@ -190,7 +190,7 @@ function Tickets (props) {
                                     {tic.assignee.firstname} {tic.assignee.lastname}
                                 </td>
                                 <td>
-                                    {tic.createdBy}
+                                    {tic.createdBy.firstname} {tic.createdBy.lastname}
                                 </td>
                                 <td>
                                     {tic.createdAt.substr(0,10)}

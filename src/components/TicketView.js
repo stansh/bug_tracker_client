@@ -6,7 +6,7 @@ import CreateTicket from './CreateTicket';
 import ModifyTicket from './ModifyTicket';
 //import SearchTickets from './SearchTickets'
 import { connect } from 'react-redux';
-
+import { useUser } from "../auth/useUser";
 
 
 
@@ -33,7 +33,7 @@ const mapDispatchToProps =  {
 
 function TicketView (props) {
 
- 
+  const user = useUser()
 const [deleted, setDeleted] = useState(false)
 const {id} = useParams();
 let currentAssignee;
@@ -42,13 +42,13 @@ let otherUsers;
 
 
 const ticket = props.tickets.find(tic => tic._id === id)
-console.log("ticket",deleted,ticket)
+
 
 if (ticket !== undefined) {
    currentAssignee = ticket.assignee
    otherUsers = props.users.filter(user=> user._id !== currentAssignee._id)
    currentPriority = ticket.priority
-   console.log(otherUsers)
+  
 
 }
 
@@ -77,11 +77,12 @@ const changeAssignee = (e) => {
     const updateData = {
       commentText: commentText,
       assignee: currentAssignee,
-      priority: currentPriority
+      priority: currentPriority,
+      commentator: user._id
      
     }
     document.getElementById(`ticketComment`).value = ''
-  
+    console.log(updateData )
      return fetch(`/tickets/${ticket._id}`, {
     
       method: "POST",
@@ -139,7 +140,7 @@ const changeAssignee = (e) => {
   }
 
 
-console.log(deleted)
+
 
     if(ticket === undefined) {
       return (
@@ -168,7 +169,15 @@ console.log(deleted)
                     <h6 className = 'mt-3 comments'>Comments:</h6>
                     {ticket.comments.map((comm,index )=>(
                         <ListGroupItem key = {index}>
-                            {comm.commentText}                                                   
+                            {comm.commentText} 
+                            <br />
+                             <small>{props.users.map(user => {
+                               if (user._id === comm.commentator) {
+                                return user.firstname + ' ' + user.lastname + ' '
+                               }
+                             })}
+                               Date Posted: {comm.createdAt.substr(0,10)}
+                             </small>                                                 
                         </ListGroupItem>
                                     
                     ))}

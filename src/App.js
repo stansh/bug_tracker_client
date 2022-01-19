@@ -13,13 +13,16 @@ import { PrivateRoute } from './auth/PrivateRoute';
 import {Routes, Route, Navigate} from 'react-router-dom';
 import { getUsersData, getTicketsData, getProjectsData,getSpecTicketData} from "./redux/actionCreators";
 import { connect } from 'react-redux';
-import { useUser } from './auth/useUser';
+import { useUser} from './auth/useUser';
+
+
+
 
 const mapDispatchToProps =  {
   getUsersData: () => getUsersData(),
   getProjectsData: () => getProjectsData(),
   getTicketsData: () => getTicketsData(),
-  /* getSpecTicketData: () => getSpecTicketData() */
+  
 }
 
 const mapStateToProps = state => { 
@@ -33,14 +36,19 @@ const mapStateToProps = state => {
 
 function App(props) {
   const user = useUser()
-
-
+ 
   useEffect(() => {
     console.log('load')
-    props.getUsersData();
-    props.getProjectsData();
-    props.getTicketsData();
+      if (user) {
+        props.getUsersData();
+        props.getProjectsData();
+        props.getTicketsData();
+        
+      }
+      
   },[]);  
+
+
 
   return (
 
@@ -51,6 +59,9 @@ function App(props) {
           
           <Route index path = '/login' element ={<Login />}/>
           <Route  path = '/signup' element ={<Signup />}/>
+        
+
+         
          
           
           <Route
@@ -83,6 +94,8 @@ function App(props) {
             </PrivateRoute>
             }
           />
+
+         
         </Routes>  
      </div> 
   );

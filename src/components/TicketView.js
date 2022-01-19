@@ -1,12 +1,12 @@
 import React, { useEffect, useState, Component} from "react";
 import { Form,FormGroup,Input,Label,Col,Button, ListGroup,ListGroupItem } from 'reactstrap';
 import { removeTicketRedux, updateTicketRedux,getTicketsData, getUsersData, getSpecTicketData, loadTickets} from "../redux/actionCreators";
-import  { useParams, Link, useNavigate} from 'react-router-dom';
-import CreateTicket from './CreateTicket';
-import ModifyTicket from './ModifyTicket';
-//import SearchTickets from './SearchTickets'
+import  { useParams, Link, useNavigate, Navigate} from 'react-router-dom';
+
 import { connect } from 'react-redux';
 import { useUser } from "../auth/useUser";
+
+
 
 
 
@@ -34,37 +34,41 @@ const mapDispatchToProps =  {
 function TicketView (props) {
 
   const user = useUser()
-const [deleted, setDeleted] = useState(false)
-const {id} = useParams();
-let currentAssignee;
-let currentPriority;
-let otherUsers;
+
+  const [deleted, setDeleted] = useState(null)
+  console.log(deleted)
+  const {id} = useParams();
+  const navigate = useNavigate()
+  const ticket = props.tickets.find(tic => tic._id === id)
+  let currentAssignee;
+  let currentPriority;
+  let otherUsers;
 
 
-const ticket = props.tickets.find(tic => tic._id === id)
-
-
-if (ticket !== undefined) {
-   currentAssignee = ticket.assignee
-   otherUsers = props.users.filter(user=> user._id !== currentAssignee._id)
-   currentPriority = ticket.priority
   
 
-}
+
+  if (ticket !== undefined) {
+    currentAssignee = ticket.assignee
+    otherUsers = props.users.filter(user=> user._id !== currentAssignee._id)
+    currentPriority = ticket.priority
+    
+
+  }
 
 
 
 
-const changePriority = (e) => {
-  currentPriority = e.target.options[e.target.selectedIndex].value
-  document.getElementById(`currentPriority`).innerHTML = currentPriority
-}
+  const changePriority = (e) => {
+    currentPriority = e.target.options[e.target.selectedIndex].value
+    document.getElementById(`currentPriority`).innerHTML = currentPriority
+  }
 
-const changeAssignee = (e) => {
-  const selectedAssigneeId = e.target.options[e.target.selectedIndex].value
-  currentAssignee = props.users.find(user=> user._id === selectedAssigneeId )
-  document.getElementById(`currentAssignee`).innerHTML = currentAssignee.firstname + ' '+  currentAssignee.lastname
-}
+  const changeAssignee = (e) => {
+    const selectedAssigneeId = e.target.options[e.target.selectedIndex].value
+    currentAssignee = props.users.find(user=> user._id === selectedAssigneeId )
+    document.getElementById(`currentAssignee`).innerHTML = currentAssignee.firstname + ' '+  currentAssignee.lastname
+  }
   
   
   
@@ -72,7 +76,6 @@ const changeAssignee = (e) => {
   const updateTicket = (e) => {
     
     e.preventDefault()
-   // document.getElementById('modifyTicketCloseBtn' + index).click()
     const commentText = document.getElementById(`ticketComment`).value
     const updateData = {
       commentText: commentText,
@@ -93,7 +96,6 @@ const changeAssignee = (e) => {
     })
     .then(response => {
             if (response.ok) {
-              //document.getElementById(`ticketComment${index}`).value = ""
                 return response;
             } else {
                 const error = new Error(`Error ${response.status}: ${response.statusText}`);
@@ -113,8 +115,8 @@ const changeAssignee = (e) => {
   
   const removeTicket = (e) => {
     e.preventDefault()
-   return fetch(`/tickets/${ticket._id}`, {
-   
+    return fetch(`/tickets/${ticket._id}`, {
+    
       method: "DELETE",
       body: JSON.stringify(),
       headers: {
@@ -134,25 +136,28 @@ const changeAssignee = (e) => {
         error => { throw error; }
     )
     .then(res => res.json())
-    .then(res => props.removeTicketRedux(res))
-    //.then(res => console.log(res))
+    .then(res => {
+      props.removeTicketRedux(res);
+      
+    })
+   
     .catch(error => {console.log('Error: ', error.message)})
   }
 
 
+   
 
+    if(deleted) {
+      return  <h5>The ticket has been removed.</h5>
+    }
 
     if(ticket === undefined) {
-      return (
-        <div className="col">
-           <h5>Ticket has been removed.</h5>
-        </div>
-       
-      )
-    } else {
+      return  <h5>Ticket not found</h5>
+    }
+  
       return (
         <div className=" row">
-            <div className="col-md-4">
+            <div className="col-md-4" style = {{borderRight:'1px solid #cccccc'}}>
                 <h6 className = 'mt-3 mb-2'>Ticket Info: <br /> 
                 
                 </h6>
@@ -162,20 +167,21 @@ const changeAssignee = (e) => {
                 <h6><span style = {{color: 'grey'}}>Last modified: </span>{ticket.updatedAt.substr(0,10)}</h6>
                 <h6><span style = {{color: 'grey'}}>Date created: </span>{ticket.createdAt.substr(0,10)}</h6>
                 <h6><span style = {{color: 'grey'}}>Assignee: </span>{ticket.assignee.firstname} {ticket.assignee.lastname}</h6>
-                <h6><span style = {{color: 'grey'}}>Created by: </span></h6>
+                <h6><span style = {{color: 'grey'}}>Created by: </span>{ticket.createdBy.firstname} {ticket.createdBy.lastname}</h6>
             </div>
-            <div className="col-md-4">
-                <ListGroup>
+            <div className="col-md-4" style = {{borderRight:'1px solid #cccccc'}}>
+                <ListGroup className="comments">
                     <h6 className = 'mt-3 comments'>Comments:</h6>
                     {ticket.comments.map((comm,index )=>(
                         <ListGroupItem key = {index}>
                             {comm.commentText} 
                             <br />
-                             <small>{props.users.map(user => {
+                             <small style ={{fontSize: '.7rem'}}>{props.users.map(user => {
                                if (user._id === comm.commentator) {
                                 return user.firstname + ' ' + user.lastname + ' '
                                }
                              })}
+                             <br />
                                Date Posted: {comm.createdAt.substr(0,10)}
                              </small>                                                 
                         </ListGroupItem>
@@ -240,7 +246,7 @@ const changeAssignee = (e) => {
           </Col>
         </FormGroup>
         
-        <Button  color = 'primary' type = 'submit' >Update Ticket</Button>
+        <Button  color = 'primary' type = 'submit'>Update Ticket</Button>
         <Button  color = 'success' onClick ={removeTicket}> Ticket Resolved</Button>
     </Form>
                 
@@ -249,7 +255,7 @@ const changeAssignee = (e) => {
  
     )
 
-    }
+    /* } */
     
 }
 

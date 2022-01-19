@@ -2,27 +2,25 @@ import React, { useEffect, useState,setState } from "react";
 import { Form,FormGroup,Input,Label,Col,Button } from 'reactstrap';
 import {useNavigate} from 'react-router-dom';
 import { useToken } from '../auth/useToken';
+import { connect } from 'react-redux';
+import { getUsersData, getTicketsData, getProjectsData} from "../redux/actionCreators";
 
-
-
-function Login () {
-   // const [token, setToken] = useToken();
-  
-  
+const mapDispatchToProps =  {
+    getUsersData: () => getUsersData(),
+    getProjectsData: () => getProjectsData(),
+    getTicketsData: () => getTicketsData(),
     
-    const [error, setError] = useState(null);
+  }
 
-    //console.log("login token", token)
+function Login (props) {
+
+    const [error, setError] = useState(null);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
     const navigate = useNavigate();
-
-    
-
     const handleLogin = (e) => {
        
-
         e.preventDefault()
         console.log('login ');
         const credentials = {
@@ -38,9 +36,7 @@ function Login () {
           },)
           .then(response => {
                   if (response.ok) {
-                   //  setToken(response.token);
-
-                  /*     navigate('/')  */
+                   
                      
                       
                       return response;
@@ -57,7 +53,10 @@ function Login () {
 
        .then(res => {
         localStorage.setItem("token", res.token);
-       navigate('/')
+        props.getUsersData();
+        props.getProjectsData();
+        props.getTicketsData();
+        navigate('/')
     })
    
 
@@ -115,4 +114,4 @@ function Login () {
 }
 
 
-export default Login
+export default connect(null, mapDispatchToProps) (Login)

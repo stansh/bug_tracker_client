@@ -20,9 +20,10 @@ function Header(props) {
 
   const user = useUser()
   const navigate = useNavigate();
+  
 
   const handleLogout =() => {
-    console.log("run")
+   
     localStorage.removeItem('token');
     navigate('/login');
   }
@@ -30,16 +31,16 @@ function Header(props) {
   return (
     
       <Nav>
-        <NavbarBrand  className='pl-3' href="/"><img  src="bugLogo.png" alt="bug-logo" width = '100px' /></NavbarBrand> 
+        <NavbarBrand  className='pl-3' href="/"><img  src="/bugLogo.png" alt="bug-logo" width = '100px' /></NavbarBrand> 
         <Link className='mt-3' to="/">Main</Link>
         <Link className='mt-3' to="/tickets">Tickets</Link>
         <div id='logoutBtn'  >
             <h6>
-              {/* {props.users.map(item => {
+              {props.users.map(item => {
                   if (item._id === user._id) {
                     return 'Hi, ' + item.firstname
                   }
-                })} */}
+                })}
             </h6>
             <Button  className='btn-sm btn-light mb-2' onClick = {handleLogout}>Logout</Button>
         </div>

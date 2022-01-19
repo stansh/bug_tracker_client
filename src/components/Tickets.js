@@ -30,18 +30,10 @@ const mapDispatchToProps =  {
 function Tickets (props) {
  
     const inputText = useRef();
+    const [searchRes,setSearchRes] = useState(null)
+    console.log(inputText)
     
-   /*  const badges = document.querySelectorAll('.priorityBadge')
-        console.log(badges)
-        badges.forEach(b =>{
-            b.classList.remove('bg-secondary')
-            b.classList.add('bg-success')
-        })
-        
- */
     
-
-
     const commentsDisplay = e => {
         const index = e.target.value.toString()
         let dispValue = document.getElementById(`comments${index}`).style.display
@@ -51,76 +43,64 @@ function Tickets (props) {
         } else {
             document.getElementById(`comments${index}`).style.display = 'none'
             e.target.innerHTML= 'Show Comments'
-
         }
     }
+    
+    const handleValue = () => {
+        console.log(inputText.current.value)
+        if (inputText.current.value === '') {
+            setSearchRes(null) 
+        } 
+    }
 
-    const searchTickets = (val) => {
-          console.log("search", val)
+    const searchTickets = () => {
+          console.log("search", inputText.current.value)
           let results;
-        if(val === '') {
+        if(inputText.current.value === '') {
             results = null;
-            props.saveSearchResults(results)
+           // props.saveSearchResults(results)
+             setSearchRes(results)
             inputText.current.value = ''
         } else {
-            const input = val.split(' ')
+            const input = inputText.current.value.split(' ')
             const results = props.tickets.filter(ticket => {
                 for ( let i = 0; i < input.length; i++ ) {
                     if(ticket.description.includes(input[i])) {
-                        return ticket
+                        return ticket;
                     }
                 }
              })
             console.log("RESULTS",results)
-            props.saveSearchResults(results)
+           // props.saveSearchResults(results)
+           setSearchRes(results)
             
-        }
-        
-      
-      
+        }        
   }
-    
- 
-
-   
-    /* const getTicketsData = () => { 
-        //dispatch(productsLoading());
-        fetch( "/tickets")
-            .then(response => {
-            if (response.ok) { 
-                return response
-            } else {
-                const error = new Error(`Error ${response.status}: ${response.statusText}`);  
-                error.response = response;
-                throw error;
-            }
-            },
-                error => { 
-                    const errMess = new Error(error.message);
-                    throw errMess;
-                    }
-            )
-        .then(res => res.json())
-        .then(res => props.loadTickets(res) )
-        .catch(error => console.log(error)) 
-        };
- */
-   /*  useEffect(() => {
-        props.getTicketsData();
-        
-       
-    },[]);   */
-
   
-   if (props.searchResults === null) {
+  useEffect(() => {
+      
+        inputText.current.addEventListener('keyup', (e) => {
+            if(e.keyCode === 13) {
+               // e.preventDefault();
+                searchTickets()
+            }
+        })
+    
+    
+   
+  },[]);  
+ 
+  
+   //if (props.searchResults === null) {
+       if(searchRes === null){
     return (
 
         <>  
             <div className="mt-3">
                 <h5>Tickets</h5>
                 <span> 
-                    <input ref = {inputText} type='search' />
-                    <Button className="mx-1" onClick ={() => searchTickets(inputText.current.value)}>Seacrh Tickets</Button>
+                    <input ref = {inputText} type='search' onChange={handleValue} />
+                    <Button className="mx-1" onClick ={searchTickets}>Seacrh Tickets</Button>
                     <Button type="button" color="primary" data-bs-toggle="modal" data-bs-target="#newTicketModal">Create New Ticket</Button>
                 </span>
                 
@@ -138,7 +118,7 @@ function Tickets (props) {
                     </div>
                 </div>
             </div>
-            <Table striped >
+            <Table striped  responsive>
                 <thead>
                     <tr>
                     <th>
@@ -181,7 +161,10 @@ function Tickets (props) {
                                     </div>
                                 </th>
                                 <td>
-                                    <Badge className='priorityBadge' >{tic.priority}</Badge>
+                                    {tic.priority==="low" && <Badge color='secondary'>Low</Badge> }
+                                    {tic.priority==="medium" && <Badge color='warning'>Medium</Badge> }
+                                    {tic.priority==="high" && <Badge color='danger'>High</Badge> }
+                                    
                                 </td>
                                 <td>
                                     {tic.project.title}
@@ -232,10 +215,10 @@ function Tickets (props) {
             <div>
                 <h5>Tickets </h5>
                 <span> 
-                    <input ref = {inputText}  /><Button outline className = 'btn btn-outline' onClick ={() => searchTickets('')}>Clear</Button>
-                    <Button  className =' col' onClick ={() => searchTickets(inputText.current.value)}>Seacrh Tickets</Button>
+                    <input ref = {inputText} type='search' onChange={handleValue}/>
+                    <Button className="mx-1" onClick ={() => searchTickets(inputText.current.value)}>Seacrh Tickets</Button>
+                    <Button type="button" color="primary" data-bs-toggle="modal" data-bs-target="#newTicketModal">Create New Ticket</Button>
                 </span>
-                <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newTicketModal">Create New Ticket</button>
             </div> 
             <div className="modal fade" id="newTicketModal"  aria-labelledby="newTicketModalLabel" aria-hidden="false">
                 <div className="modal-dialog">
@@ -250,7 +233,7 @@ function Tickets (props) {
                     </div>
                 </div>
             </div>
-            <Table striped>
+            <Table striped responsive>
                 <thead>
                     <tr>
                     <th>
@@ -274,10 +257,12 @@ function Tickets (props) {
                     </tr>
                 </thead>
                 <tbody>
-                    {props.searchResults.map((tic,index) => (
+                    {searchRes.map((tic,index) => (
                         <tr key = {index}>
                             <th >
-                                <h4>{tic.description}</h4>
+                            <Link to = {`/tickets/${tic._id}`}>  
+                                        <h4>{tic.description}</h4>
+                                    </Link>
                                 <Button outline size ='sm' color ='secondary' value = {index} onClick = {commentsDisplay}>Show Commnets</Button>
                                 <div className = 'list-unstyled small comments' id = {`comments${index}`} style = {{display: "none"}}>
                                     <p>Comments: </p>  
@@ -287,13 +272,19 @@ function Tickets (props) {
                                 </div>
                             </th>
                             <td>
+                                    {tic.priority==="low" && <Badge color='secondary'>Low</Badge> }
+                                    {tic.priority==="medium" && <Badge color='warning'>Medium</Badge> }
+                                    {tic.priority==="high" && <Badge color='danger'>High</Badge> }
+                                    
+                                </td>
+                            <td>
                                 {tic.project.title}
                             </td>
                             <td>
                                 {tic.assignee.firstname} {tic.assignee.lastname}
                             </td>
                             <td>
-                                {tic.createdBy}
+                            {tic.createdBy.firstname} {tic.createdBy.lastname}
                             </td>
                             <td>
                                 {tic.createdAt.substr(0,10)}

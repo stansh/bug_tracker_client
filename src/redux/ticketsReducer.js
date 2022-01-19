@@ -5,8 +5,8 @@ import * as actions from "./actions"
 export const ticketsReducer = (state = {
     isLoading:true,
     errMess:null,
-    tickets: [],
-    searchResults:null
+    tickets: []
+   // searchResults:null
 }, action) => {
     switch (action.type) {
         case actions.LOAD_TICKETS:
@@ -19,6 +19,7 @@ export const ticketsReducer = (state = {
             let newTicket = action.payload.res;
             newTicket.assignee = action.payload.assignee;
             newTicket.project = action.payload.project;
+            newTicket.createdBy = action.payload.userObj;
             console.log(newTicket )
 
             return {...state, isLoading: true, errMess: null, tickets: state.tickets.concat(newTicket)};
@@ -40,11 +41,11 @@ export const ticketsReducer = (state = {
                     return tic
                 })
             };
-        case actions.SAVE_SEARCH_RESULTS:
+       /*  case actions.SAVE_SEARCH_RESULTS:
             console.log(action.payload)
             return {...state, isLoading: false, errMess: null, searchResults: action.payload};    
         
-            
+             */
         default:
             return state;
     }

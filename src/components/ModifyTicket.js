@@ -151,7 +151,7 @@ return (
             >  
               <option value = 'low'>Low</option>
               <option value = 'medium'>Medium</option>
-              <option value = 'high'>Hight</option>
+              <option value = 'high'>High</option>
 
             </Input>
           
@@ -179,7 +179,7 @@ return (
         </FormGroup>
         
         <Button  color = 'primary' type = 'submit' >Update Ticket</Button>
-        <Button  color = 'success' onClick ={removeTicket}> Ticket Resolved</Button>
+        <Button   className = 'mx-2' color = 'success' onClick ={removeTicket}> Ticket Resolved</Button>
     </Form>
     </>
 

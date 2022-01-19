@@ -15,42 +15,12 @@ const mapStateToProps = state => {
   
   const mapDispatchToProps =  {
    loadTickets: (data) => loadTickets(data)
-  
-    
    
   }
 
-
-
 function TicsByProject (props) {
 
-    /* const getTicketsData = () => { 
-        //dispatch(productsLoading());
-        fetch( "/tickets")
-            .then(response => {
-            if (response.ok) { 
-                return response
-            } else {
-                const error = new Error(`Error ${response.status}: ${response.statusText}`);  
-                error.response = response;
-                throw error;
-            }
-            },
-                error => { 
-                    const errMess = new Error(error.message);
-                    throw errMess;
-                    }
-            )
-        .then(res => res.json())
-        .then(res => props.loadTickets(res) )
-        .catch(error => console.log(error)) 
-        };
-
-    useEffect(() => {
-        getTicketsData();
-        
-       
-    },[]);   */
+   
 
     return (
         <div className = 'row'>

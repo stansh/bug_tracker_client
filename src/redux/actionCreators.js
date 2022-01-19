@@ -1,4 +1,5 @@
 import * as actions from './actions';
+import Loading from '../components/Loading';
 
 
 export const loadProjects = data => ({
@@ -6,10 +7,33 @@ export const loadProjects = data => ({
     payload: data
 });
 
+
+export const loadingProjects = ()=> ({
+    type: actions.LOADING_PROJECTS
+   
+});
+
+export const loadProjectsFailed = err => ({
+    type: actions.LOAD_PROJECTS_FAILED,
+    payload: err
+});
+
+
+
 export const loadUsers = data => ({
     type: actions.LOAD_USERS,
     payload: data
 });
+
+export const loadingUsers = ()=> ({
+    type: actions.LOADING_USERS
+});
+
+export const loadUsersFailed = err => ({
+    type: actions.LOAD_USERS_FAILED,
+    payload: err
+});
+
 
 export const loadTickets = data => ({
     type: actions.LOAD_TICKETS,
@@ -52,10 +76,16 @@ export const saveSearchResults = data => ({
 
 //fetch project data
  export const getProjectsData = () => dispatch => { 
-    //export const getProjectsData = () => { 
-            
-        //dispatch(productsLoading());
-        fetch( "/projects")
+
+       const token = localStorage.getItem("token");
+        // console.log(token)
+        dispatch(Loading());
+        fetch ( "/projects", {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+              
+        })
             .then(response => {
             if (response.ok) { 
                 
@@ -80,8 +110,14 @@ export const saveSearchResults = data => ({
 //fetch tickets data
 
 export const getTicketsData = () => dispatch => { 
-    //dispatch(productsLoading());
-    fetch( "/tickets")
+    const token = localStorage.getItem("token"); 
+    dispatch(Loading());
+    fetch( "/tickets", {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+      
+    })
         .then(response => {
         if (response.ok) { 
             return response
@@ -105,9 +141,13 @@ export const getTicketsData = () => dispatch => {
 
 export const getUsersData = () => dispatch => { 
     
-            
-        //dispatch(productsLoading());
-        fetch( "/users")
+    const token = localStorage.getItem("token");      
+        dispatch(Loading());
+        fetch( "/users", {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
             .then(response => {
             if (response.ok) { 
                // console.log(response)

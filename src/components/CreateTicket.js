@@ -21,8 +21,7 @@ const mapDispatchToProps =  {
 
 function CreateTicket (props) {
    const user = useUser();
-
-
+  
   const onSubmit = (event)=> {
     event.preventDefault()
     document.querySelector("#modalCloseBtn").click()
@@ -30,14 +29,16 @@ function CreateTicket (props) {
     const projectId  = event.target.selectProject.options[event.target.selectProject.selectedIndex].value
     const assignee = props.users.find(user => user._id === assigneeId)
     const project = props.projects.find(proj => proj._id === projectId)
+    const userObj = props.users.find(usr => usr._id === user._id)
+
     
  
     const formData = {
       description: event.target.description.value,
-      assignee: assigneeId,
-      project: projectId,
+      assignee: assignee,
+      project: project,
       priority: event.target.selectPriority.options[event.target.selectPriority.selectedIndex].value,
-      createdBy: user._id
+      createdBy: userObj 
     }
 
     event.target.description.value = ''
@@ -62,7 +63,7 @@ function CreateTicket (props) {
         error => { throw error; }
     )
     .then(res => res.json())
-    .then(res => props.addTicketRedux({res,assignee,project}))
+    .then(res => props.addTicketRedux({res,assignee,project,userObj}))
     .catch(error => {console.log('Error: ', error.message)})
 
   } 
@@ -100,7 +101,7 @@ function CreateTicket (props) {
               
               <option value = 'low'>Low</option>
               <option value = 'medium'>Medium</option>
-              <option value = 'high'>Hight</option>
+              <option value = 'high'>High</option>
 
               
               

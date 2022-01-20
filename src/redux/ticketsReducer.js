@@ -12,7 +12,7 @@ export const ticketsReducer = (state = {
         case actions.LOAD_TICKETS:
             return {...state, isLoading: false, errMess: null, tickets: action.payload};
         case actions.LOADING_TICKETS:
-            return {...state, isLoading: true, errMess: null, tickets: action.payload};
+            return {...state, isLoading: true, errMess: null, tickets: []};
         case actions.LOAD_TICKETS_FAILED:
             return {...state, isLoading: false, errMess: action.payload, tickets: []};
         case actions.ADD_TICKET:

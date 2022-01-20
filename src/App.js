@@ -59,11 +59,6 @@ function App(props) {
           
           <Route index path = '/login' element ={<Login />}/>
           <Route  path = '/signup' element ={<Signup />}/>
-        
-
-         
-         
-          
           <Route
             exact
             path = '/'
@@ -71,8 +66,6 @@ function App(props) {
             <PrivateRoute> 
                 <Header />
               <Main />
-              
-              
             </PrivateRoute>
             }
           />

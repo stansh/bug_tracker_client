@@ -1,12 +1,12 @@
 import React, { useEffect, useState,useRef  } from "react";
 import { Table,Badge,ModalBody,ModalHeader,ModalFooter,Button } from 'reactstrap';
 import { getTicketsData, saveSearchResults} from "../redux/actionCreators";
-import  {  Link} from 'react-router-dom';
+import  { Link} from 'react-router-dom';
 import CreateTicket from './CreateTicket';
 import ModifyTicket from './ModifyTicket';
 //import SearchTickets from './SearchTickets'
 import { connect } from 'react-redux';
-
+ import Loading from "./Loading";
 
 
 
@@ -15,6 +15,7 @@ const mapStateToProps = state => {
         projects: state.projectsReducer.projects,
         users: state.usersReducer.users,
         tickets:state.ticketsReducer.tickets,
+        isLoading:state.ticketsReducer.isLoading,
         searchResults: state.ticketsReducer.searchResults
     };
   };
@@ -78,16 +79,11 @@ function Tickets (props) {
   }
   
   useEffect(() => {
-      
         inputText.current.addEventListener('keyup', (e) => {
             if(e.keyCode === 13) {
-               // e.preventDefault();
                 searchTickets()
             }
         })
-    
-    
-   
   },[]);  
  
   
@@ -96,6 +92,7 @@ function Tickets (props) {
     return (
 
         <>  
+            
             <div className="mt-3">
                 <h5>Tickets</h5>
                 <span> 
@@ -104,7 +101,8 @@ function Tickets (props) {
                     <Button type="button" color="primary" data-bs-toggle="modal" data-bs-target="#newTicketModal">Create New Ticket</Button>
                 </span>
                 
-            </div> 
+            </div>
+            {props.isLoading && <Loading /> } 
             <div className="modal fade" id="newTicketModal"  aria-labelledby="newTicketModalLabel" aria-hidden="false">
                 <div className="modal-dialog">
                     <div className="modal-content">

@@ -4,7 +4,7 @@ import {Spinner} from 'reactstrap'
 function Loading () {
     return (
         <div>
-            <Spinner color="dark" width = '500' className= "mt-5" children = "" />
+            <Spinner color="secondary" width = '500'  children = "" />
         </div>
     )
 }

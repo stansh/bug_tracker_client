@@ -1,5 +1,8 @@
 import * as actions from './actions';
-import Loading from '../components/Loading';
+
+
+
+
 
 
 export const loadProjects = data => ({
@@ -76,10 +79,10 @@ export const saveSearchResults = data => ({
 
 //fetch project data
  export const getProjectsData = () => dispatch => { 
-
+        
        const token = localStorage.getItem("token");
         // console.log(token)
-        dispatch(Loading());
+        dispatch(loadingProjects());
         fetch ( "/projects", {
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -91,14 +94,17 @@ export const saveSearchResults = data => ({
                 
                 return response
             } else {
+                
                 const error = new Error(`Error ${response.status}: ${response.statusText}`);  
                 error.response = response;
                 throw error;
             }
             },
                 error => { 
+                   
                     const errMess = new Error(error.message);
                     throw errMess;
+                    
                     }
             )
         .then(res => res.json())
@@ -111,7 +117,7 @@ export const saveSearchResults = data => ({
 
 export const getTicketsData = () => dispatch => { 
     const token = localStorage.getItem("token"); 
-    dispatch(Loading());
+    dispatch(loadingTickets());
     fetch( "/tickets", {
         headers: {
             Authorization: `Bearer ${token}`
@@ -142,7 +148,7 @@ export const getTicketsData = () => dispatch => {
 export const getUsersData = () => dispatch => { 
     
     const token = localStorage.getItem("token");      
-        dispatch(Loading());
+        dispatch(loadTicketsFailed());
         fetch( "/users", {
             headers: {
                 Authorization: `Bearer ${token}`

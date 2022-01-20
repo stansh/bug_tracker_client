@@ -1,5 +1,5 @@
 import React, { useEffect, useState,setState } from "react";
-import { Form,FormGroup,Input,Label,Col,Button } from 'reactstrap';
+import { Form,FormGroup,Input,Label,Col,Button,Card,CardBody,CardTitle } from 'reactstrap';
 import {useNavigate} from 'react-router-dom';
 import { useToken } from '../auth/useToken';
 import { connect } from 'react-redux';
@@ -36,9 +36,7 @@ function Login (props) {
           },)
           .then(response => {
                   if (response.ok) {
-                   
-                     
-                      
+
                       return response;
                   } else {
                       const error = new Error(`Error ${response.status}: ${response.statusText}`);
@@ -59,7 +57,6 @@ function Login (props) {
         navigate('/')
     })
    
-
          .catch(error => {
              console.log('Error: ', error.message)
              setError(error.message)
@@ -70,14 +67,15 @@ function Login (props) {
 
 
     return (
-        <>
-            <Form onSubmit = {handleLogin}> 
+        <div style ={{backgroundColor:'green'}}>
+
+            <Form onSubmit = {handleLogin} id = 'loginForm'  > 
                 <h3>Login</h3>
                 <FormGroup>
                     <Label for="email">
                         E-mail
                     </Label>
-                    <Col sm={4}>
+                    <Col sm={8}>
                     <Input
                         id="email"
                         name="email"
@@ -85,7 +83,6 @@ function Login (props) {
                         type = "email"
                         value={email}
                         onChange={e => setEmail(e.target.value)}
-
                     />
                     </Col>
                 </FormGroup>
@@ -93,7 +90,7 @@ function Login (props) {
                     <Label for="password">
                         Password
                     </Label>
-                    <Col sm={4}>
+                    <Col sm={8}>
                     <Input
                         id="password"
                         name="password"
@@ -101,14 +98,13 @@ function Login (props) {
                         type = "password"
                         value={password}
                         onChange={e => setPassword(e.target.value)}
-
                     />
                      </Col>
                 </FormGroup>
-                <Button type = "submit" >Login</Button>
-                <Button type = "button" onClick={() => navigate('/signup')} >Registration</Button>
+                <Button type = "submit" color ='primary' >Login</Button>
+                <Button type = "button" className = 'mx-2' onClick={() => navigate('/signup')} >Registration</Button>
             </Form>
-        </>
+        </div>
     )
 
 }

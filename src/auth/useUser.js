@@ -3,11 +3,19 @@ import { useToken } from './useToken';
 
 export const useUser = () => {
     const [token] = useToken();
-  
+    const currentTime = Date.now() / 1000
+ 
     const getPayloadFromToken = token => {
         const encodedPayload = token.split('.')[1];
-        return JSON.parse(atob(encodedPayload));
+        const payload  = JSON.parse(atob(encodedPayload));
+        if (payload.exp < currentTime) {
+            console.log('expired',token)
+            localStorage.removeItem('token')
+            return null
+        } 
+        return payload
     }
+
 
     const [user, setUser] = useState(() => {
         if (!token) return null;
@@ -21,6 +29,6 @@ export const useUser = () => {
             setUser(getPayloadFromToken(token));
         }
     }, [token]);
-
+    
     return user;
 }

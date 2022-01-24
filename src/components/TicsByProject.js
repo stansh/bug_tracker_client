@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Card, CardBody, CardTitle, ListGroup,ListGroupItem } from 'reactstrap';
 import { loadTickets} from "../redux/actionCreators";
 import { connect } from 'react-redux';
-import  {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 
 const mapStateToProps = state => { 
@@ -13,15 +13,12 @@ const mapStateToProps = state => {
     };
   };
   
-  const mapDispatchToProps =  {
+const mapDispatchToProps =  {
    loadTickets: (data) => loadTickets(data)
-   
   }
 
+
 function TicsByProject (props) {
-
-   
-
     return (
         <div className = 'row'>
              <h5>Tickets by Projects</h5>
@@ -44,16 +41,11 @@ function TicsByProject (props) {
 
                         </ListGroup>
                         
-
                     </CardBody>
                 </Card>
-
             ))}
-        
         </div>
-
     )
-
 }
 
 

@@ -6,7 +6,6 @@ export const ticketsReducer = (state = {
     isLoading:true,
     errMess:null,
     tickets: []
-   // searchResults:null
 }, action) => {
     switch (action.type) {
         case actions.LOAD_TICKETS:
@@ -20,18 +19,12 @@ export const ticketsReducer = (state = {
             newTicket.assignee = action.payload.assignee;
             newTicket.project = action.payload.project;
             newTicket.createdBy = action.payload.userObj;
-            console.log(newTicket )
-
             return {...state, isLoading: true, errMess: null, tickets: state.tickets.concat(newTicket)};
         case actions.REMOVE_TICKET:
             const updatedTickets = state.tickets.filter(tic => tic._id !== action.payload._id)
             return {...state, isLoading: true, errMess: null, tickets: updatedTickets};
         case actions.UPDATE_TICKET:
-            
-            // const newComment = action.payload.comments.pop()
-          // console.log(newComment )
-          
-             return{...state,
+             return {...state,
                 tickets: state.tickets.map(tic=> {
                     if(tic._id === action.payload._id) {
                         tic.assignee = action.payload.assignee;
@@ -41,11 +34,6 @@ export const ticketsReducer = (state = {
                     return tic
                 })
             };
-       /*  case actions.SAVE_SEARCH_RESULTS:
-            console.log(action.payload)
-            return {...state, isLoading: false, errMess: null, searchResults: action.payload};    
-        
-             */
         default:
             return state;
     }

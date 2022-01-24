@@ -1,10 +1,6 @@
 import * as actions from './actions';
 
 
-
-
-
-
 export const loadProjects = data => ({
     type: actions.LOAD_PROJECTS,
     payload: data
@@ -78,53 +74,47 @@ export const saveSearchResults = data => ({
 })
 
 //fetch project data
- export const getProjectsData = () => dispatch => { 
-        
-       const token = localStorage.getItem("token");
-        // console.log(token)
-        dispatch(loadingProjects());
-        fetch ( "/projects", {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-              
-        })
-            .then(response => {
-            if (response.ok) { 
-                
-                return response
-            } else {
-                
-                const error = new Error(`Error ${response.status}: ${response.statusText}`);  
-                error.response = response;
-                throw error;
-            }
-            },
-                error => { 
-                   
-                    const errMess = new Error(error.message);
-                    throw errMess;
-                    
-                    }
-            )
-        .then(res => res.json())
-        .then(res => dispatch(loadProjects(res)))
-        .catch(error => console.log(error)) 
-        };
+export const getProjectsData = () => dispatch => { 
+    const token = localStorage.getItem("token");
+    dispatch(loadingProjects());
+    fetch ( "/projects", {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }          
+    })
+    .then(response => {
+        if (response.ok) { 
+            return response
+        } else {
+            
+            const error = new Error(`Error ${response.status}: ${response.statusText}`);  
+            error.response = response;
+            throw error;
+        }
+    },
+        error => { 
+            const errMess = new Error(error.message);
+            throw errMess;
+            
+        }
+    )
+    .then(res => res.json())
+    .then(res => dispatch(loadProjects(res)))
+    .catch(error => console.log(error)) 
+};
+
 
 
 //fetch tickets data
-
 export const getTicketsData = () => dispatch => { 
     const token = localStorage.getItem("token"); 
     dispatch(loadingTickets());
     fetch( "/tickets", {
         headers: {
             Authorization: `Bearer ${token}`
-        }
-      
+        } 
     })
-        .then(response => {
+    .then(response => {
         if (response.ok) { 
             return response
         } else {
@@ -132,68 +122,46 @@ export const getTicketsData = () => dispatch => {
             error.response = response;
             throw error;
         }
-        },
-            error => { 
-                const errMess = new Error(error.message);
-                throw errMess;
-                }
-        )
+    },
+        error => { 
+            const errMess = new Error(error.message);
+            throw errMess;
+        }
+    )
     .then(res => res.json())
     .then(res => dispatch(loadTickets(res)))
     .catch(error => console.log(error)) 
-    };
+};
+
+
 
 // fetch users data
-
 export const getUsersData = () => dispatch => { 
-    
     const token = localStorage.getItem("token");      
-        dispatch(loadTicketsFailed());
-        fetch( "/users", {
-            headers: {
-                Authorization: `Bearer ${token}`
+    dispatch(loadTicketsFailed());
+    fetch( "/users", {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    })
+    .then(response => {
+        if (response.ok) { 
+            return response
+        } else {
+            const error = new Error(`Error ${response.status}: ${response.statusText}`);  
+            error.response = response;
+            throw error;
+        }
+    },
+        error => { 
+            const errMess = new Error(error.message);
+            throw errMess;
             }
-        })
-            .then(response => {
-            if (response.ok) { 
-               // console.log(response)
-                return response
-            } else {
-                const error = new Error(`Error ${response.status}: ${response.statusText}`);  
-                error.response = response;
-                throw error;
-            }
-            },
-                error => { 
-                    const errMess = new Error(error.message);
-                    throw errMess;
-                    }
-            )
-        .then(res => res.json())
-        .then(res => dispatch(loadUsers(res)))
-        .catch(error => console.log(error)) 
-        };
+    )
+    .then(res => res.json())
+    .then(res => dispatch(loadUsers(res)))
+    .catch(error => console.log(error)) 
+};
 
 
-// get specific ticket
-export const getSpecTicketData = (id) => dispatch => { 
-        //dispatch(productsLoading());
-        fetch( `/tickets/${id}`)
-            .then(response => {
-            if (response.ok) { 
-                return response
-            } else {
-                const error = new Error(`Error ${response.status}: ${response.statusText}`);  
-                error.response = response;
-                throw error;
-            }
-            },
-                error => { 
-                    const errMess = new Error(error.message);
-                    throw errMess;
-                    }
-            )
-        .then(res => res.json())
-        .then(res => dispatch(loadTickets(res)))
-        .catch(error => console.log(error)) 
-        };
+

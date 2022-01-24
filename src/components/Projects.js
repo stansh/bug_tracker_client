@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Table } from 'reactstrap';
 import { getProjectsData} from "../redux/actionCreators";
 import { connect } from 'react-redux';
 import Loading from "./Loading";
-
-
 
 
 const mapDispatchToProps =  {
@@ -20,54 +18,48 @@ const mapStateToProps = state => {
 };
 
 function Projects (props) {
-
-console.log(props.projects)
-
-  
-   return (
+    return (
         <>   
-            
-            <h5>Projects </h5>
+            <h5>Projects</h5>
             {props.isLoading && <Loading /> }
             <Table striped responsive>
                 <thead>
                     <tr>
-                    <th>
-                        # 
-                    </th>
-                    <th>
-                        Project
-                    </th>
-                    <th>
-                        Description
-                    </th>
-                    <th>
-                        Date created
-                    </th>
+                        <th>
+                            # 
+                        </th>
+                        <th>
+                            Project
+                        </th>
+                        <th>
+                            Description
+                        </th>
+                        <th>
+                            Date created
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
                     {props.projects.map((proj,index) => (
                         <tr key = {index}>
                             <th scope="row">
-                            {index + 1}
+                                {index + 1}
                             </th>
                             <td>
-                            {proj.title}
+                                {proj.title}
                             </td>
                             <td>
-                            {proj.description}
+                                {proj.description}
                             </td>
                             <td>
-                            {proj.timestamp.substr(0,10)}
+                                {proj.timestamp.substr(0,10)}
                             </td>
                         </tr> 
                     ))}
-
                 </tbody>
             </Table>
-       </>        
-   )
+        </>        
+    )
 }
 
 

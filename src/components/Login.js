@@ -1,7 +1,7 @@
-import React, { useEffect, useState,setState } from "react";
-import { Form,FormGroup,Input,Label,Col,Button,Card,CardBody,CardTitle } from 'reactstrap';
-import {useNavigate} from 'react-router-dom';
-import { useToken } from '../auth/useToken';
+import React, {useState} from "react";
+import { Form,FormGroup,Input,Label,Col,Button } from 'reactstrap';
+import { useNavigate } from 'react-router-dom';
+
 import { connect } from 'react-redux';
 import { getUsersData, getTicketsData, getProjectsData} from "../redux/actionCreators";
 
@@ -13,6 +13,7 @@ const mapDispatchToProps =  {
   }
 
 function Login (props) {
+    document.body.style.backgroundImage = 'linear-gradient(90deg, #60d39a 0%, #2385BE 150%)'
 
     const [error, setError] = useState(null);
     const [email, setEmail] = useState('');
@@ -22,7 +23,6 @@ function Login (props) {
     const handleLogin = (e) => {
        
         e.preventDefault()
-        console.log('login ');
         const credentials = {
             username: email,
             password,
@@ -36,7 +36,6 @@ function Login (props) {
           },)
           .then(response => {
                   if (response.ok) {
-
                       return response;
                   } else {
                       const error = new Error(`Error ${response.status}: ${response.statusText}`);
@@ -50,27 +49,27 @@ function Login (props) {
          .then(res => res.json())
 
        .then(res => {
-        localStorage.setItem("token", res.token);
-        props.getUsersData();
-        props.getProjectsData();
-        props.getTicketsData();
-        navigate('/')
+            localStorage.setItem("token", res.token);
+            props.getUsersData();
+            props.getProjectsData();
+            props.getTicketsData();
+            navigate('/')
     })
    
-         .catch(error => {
-             console.log('Error: ', error.message)
-             setError(error.message)
-            })
-
+        .catch(error => {
+            console.log('Error: ', error.message)
+            setError(error.message)
+        })
     }
-
-
+    
+ 
 
     return (
-        <div style ={{backgroundColor:'green'}}>
-
+        <div>
+          
             <Form onSubmit = {handleLogin} id = 'loginForm'  > 
-                <h3>Login</h3>
+            <img  src="/bugLogoBlack.png" alt="bug-logo" width = '180px'  id = 'logoLogin' class="d-block mx-auto mb-5" /> 
+                <h5>Login </h5>
                 <FormGroup>
                     <Label for="email">
                         E-mail
@@ -103,7 +102,9 @@ function Login (props) {
                 </FormGroup>
                 <Button type = "submit" color ='primary' >Login</Button>
                 <Button type = "button" className = 'mx-2' onClick={() => navigate('/signup')} >Registration</Button>
+               
             </Form>
+
         </div>
     )
 

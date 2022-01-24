@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState,forwardRef } from "react";
+import React from "react";
 import { Form,FormGroup,Input,Label,Col,Button } from 'reactstrap';
 import { connect } from 'react-redux';
 import { addTicketRedux} from "../redux/actionCreators";
@@ -16,8 +16,6 @@ const mapDispatchToProps =  {
   addTicketRedux: (data) => addTicketRedux(data)
  
 }
-
-
 
 function CreateTicket (props) {
    const user = useUser();
@@ -98,13 +96,10 @@ function CreateTicket (props) {
               name="sselectPriority"
               type="select"
             >  
-              
               <option value = 'low'>Low</option>
               <option value = 'medium'>Medium</option>
               <option value = 'high'>High</option>
-
-              
-              
+ 
             </Input>
           
           </Col>

@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Table } from 'reactstrap';
-import { getUsersData} from "../redux/actionCreators";
+import { getUsersData } from "../redux/actionCreators";
 import { connect } from 'react-redux';
 import Loading from "./Loading";
 
@@ -18,47 +18,39 @@ const mapStateToProps = state => {
     };
 };
 
+
 function Users (props) {
-   
-
-
-
-  
-   return (
+    return (
         <>   
-            
             <h5>Users</h5>
             {props.isLoading && <Loading />}
             <Table striped>
                 <thead>
                     <tr>
-                    <th>
-                        Name
-                    </th>
-                    <th>
-                        E-mail
-                    </th>
-                   
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            E-mail
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
                     {props.users.map((user,index) => (
                         <tr key = {index}>
                             <td>
-                            {user.firstname + " " + user.lastname}
+                                {user.firstname + " " + user.lastname}
                             </td>
                             <td>
-                            {user.username}
+                                {user.username}
                             </td>
-                        
                         </tr> 
                     ))}
-
                 </tbody>
             </Table>
-       </>        
-   )
+        </>        
+    )
 }
 
-//export default withRouter(connect(mapStateToProps, mapDispatchToProps)(AllProducts));
+
 export default connect(mapStateToProps, mapDispatchToProps)(Users);

@@ -1,5 +1,5 @@
-import React, { useEffect,useState,useRef } from 'react';
-import { Nav, NavItem,  NavLink, NavbarBrand,Button  } from 'reactstrap';
+import React from 'react';
+import { Nav, NavbarBrand, Button  } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../auth/useUser';
@@ -8,9 +8,7 @@ import { connect } from 'react-redux';
 
 const mapStateToProps = state => { 
   return {
-      //projects: state.projectsReducer.projects,
       users: state.usersReducer.users,
-      //tickets:state.ticketsReducer.tickets
      
   };
 };
@@ -21,7 +19,6 @@ function Header(props) {
   const user = useUser()
   const navigate = useNavigate();
   
-
   const handleLogout =() => {
     localStorage.removeItem('token');
     navigate('/login');

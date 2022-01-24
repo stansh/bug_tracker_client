@@ -9,7 +9,6 @@ const rootReducer = combineReducers({
   projectsReducer,
   usersReducer,
   ticketsReducer
-
 })
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

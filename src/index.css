@@ -87,5 +87,7 @@ h5 {
   box-sizing: border-box;
   box-shadow: 0 5px 5px rgba(119, 118, 118, 0.6);
   border-radius: 10px;
+  background-color: white;
 }
+
 

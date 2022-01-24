@@ -35,62 +35,50 @@ const mapStateToProps = state => {
 };
 
 function App(props) {
-  const user = useUser()
- 
+  const user = useUser() 
   useEffect(() => {
-    console.log('load')
-      if (user) {
-        props.getUsersData();
-        props.getProjectsData();
-        props.getTicketsData();
-        
-      }
-      
+    if (user) {
+      props.getUsersData();
+      props.getProjectsData();
+      props.getTicketsData();
+    } 
   },[]);  
 
-
-
   return (
-
-     <div className='container'> 
-      <div className = 'row'>
-      </div> 
-        <Routes >
-          
-          <Route index path = '/login' element ={<Login />}/>
-          <Route  path = '/signup' element ={<Signup />}/>
-          <Route
-            exact
-            path = '/'
-            element={
+    <div className='container'> 
+      <Routes>
+        <Route index path = '/login' element ={<Login />}/>
+        <Route  path = '/signup' element ={<Signup />}/>
+        <Route
+          exact
+          path = '/'
+          element={
             <PrivateRoute> 
                 <Header />
               <Main />
             </PrivateRoute>
-            }
-          />
-          <Route
-            path = '/tickets'
-            element={
+          }
+        />
+        <Route
+          path = '/tickets'
+          element={
             <PrivateRoute>
-               <Header />
+                <Header />
               <Tickets/>
             </PrivateRoute>
-            }
-          />
-          <Route
-            path = '/tickets/:id'
-            element={
+          }
+        />
+        <Route
+          path = '/tickets/:id'
+          element={
             <PrivateRoute>
-               <Header />
+                <Header />
               <TicketView/>
             </PrivateRoute>
-            }
-          />
-
-         
-        </Routes>  
-     </div> 
+          }
+        />
+      </Routes>  
+    </div> 
   );
 }
 

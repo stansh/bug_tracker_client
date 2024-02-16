@@ -72,7 +72,7 @@ function Login (props) {
                 <h5>Login </h5>
                 <FormGroup>
                     <Label for="email">
-                        E-mail user@mymail.com
+                        E-mail
                     </Label>
                     <Col sm={8}>
                     <Input
@@ -87,7 +87,7 @@ function Login (props) {
                 </FormGroup>
                 <FormGroup>
                     <Label for="password">
-                        Password 1234
+                        Password
                     </Label>
                     <Col sm={8}>
                     <Input
